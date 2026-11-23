@@ -8,5 +8,5 @@ preview_urls = true
 [[d1_databases]]
 binding = "DB"
 database_name = "adnan-bavari-db"
-database_id = "b8807b59-2033-4ee3-8d7f-b5bf53"
+database_id = "هەمان ID ـی پێشووی خۆت"
 migrations_dir = "migrations"
