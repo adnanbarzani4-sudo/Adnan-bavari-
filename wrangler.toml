@@ -1,11 +1,12 @@
-name = "adnan-bavari-design"
-pages_build_output_dir = "."
+
+name = "adnan-bavari"
+main = "worker.js"
 compatibility_date = "2026-11-23"
 
 [[d1_databases]]
 binding = "DB"
 database_name = "adnan-bavari-db"
-database_id = "PASTE_YOUR_D1_DATABASE_ID_HERE"
+database_id = "b8807b59-2033-4ee3-8d7f-b5bf537aeae1"
 migrations_dir = "migrations"
 
 [[r2_buckets]]
