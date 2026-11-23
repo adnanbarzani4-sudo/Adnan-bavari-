@@ -1,14 +1,12 @@
-
 name = "adnan-bavari"
 main = "worker.js"
 compatibility_date = "2026-11-23"
 
+workers_dev = true
+preview_urls = true
+
 [[d1_databases]]
 binding = "DB"
 database_name = "adnan-bavari-db"
-database_id = "b8807b59-2033-4ee3-8d7f-b5bf537aeae1"
+database_id = "b8807b59-2033-4ee3-8d7f-b5bf53"
 migrations_dir = "migrations"
-
-[[r2_buckets]]
-binding = "LOGOS"
-bucket_name = "adnan-bavari-logos"
