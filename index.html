@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ku" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071b12"><title>Adnan Bavari Design</title>
+<style>
+:root{--bg:#071b12;--panel:#0d2b1d;--panel2:#143b28;--gold:#d8b75f;--gold2:#f1dda0;--txt:#f7f3e8;--muted:#bac8bd;--line:#315541}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#163c29,var(--bg) 58%);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:28px 18px 20px;text-align:center;border-bottom:1px solid var(--line)}.brand{font-size:clamp(27px,5vw,44px);font-weight:900;color:var(--gold2);letter-spacing:.5px}.tag{color:var(--muted);margin:8px auto 18px}
+.nav{display:flex;gap:9px;justify-content:center;align-items:center;flex-wrap:wrap}.btn,.nav a{border:1px solid var(--gold);background:#102f20;color:var(--gold2);padding:10px 15px;border-radius:12px;text-decoration:none;font-weight:750;cursor:pointer}.btn:hover,.nav a:hover{background:var(--gold);color:#102316}
+.wrap{max-width:1200px;margin:auto;padding:20px 16px 48px}.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}input,select,textarea{background:#0b291b;border:1px solid var(--line);color:var(--txt);padding:12px;border-radius:11px;font:inherit;min-width:0}#search{flex:1;min-width:190px}.count{color:var(--muted);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}.card{background:linear-gradient(145deg,#123824,#0b2519);border:1px solid var(--line);border-radius:16px;overflow:hidden;transition:.18s}.card:hover{transform:translateY(-3px);border-color:var(--gold)}
+.thumb{height:190px;background:#f4f0e6;display:grid;place-items:center;padding:12px}.thumb img{max-width:100%;max-height:100%;object-fit:contain}.placeholder{font-size:32px;font-weight:900;color:#183b29}
+.info{padding:14px}.name{margin:0 0 7px;color:var(--gold2);font-size:18px}.desc{margin:0 0 12px;color:var(--muted);font-size:14px;line-height:1.6;min-height:42px}.price{color:var(--gold);font-size:18px;font-weight:850;margin-bottom:12px}.actions{display:flex;gap:8px}.actions a{flex:1;text-align:center;text-decoration:none;border:1px solid var(--gold);color:var(--gold2);border-radius:10px;padding:10px 6px;font-weight:750;font-size:13px}.actions a:hover{background:var(--gold);color:#102316}
+footer{text-align:center;border-top:1px solid var(--line);padding:22px;color:var(--muted)}#qr{display:block;width:112px;height:112px;margin:12px auto;background:white;padding:5px;border-radius:8px}
+.empty{text-align:center;padding:40px;color:var(--muted)}.lang{min-width:80px}
+@media(max-width:540px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.thumb{height:132px}.info{padding:10px}.name{font-size:15px}.desc{font-size:12px;min-height:58px}.price{font-size:15px}.actions{flex-direction:column}.actions a{padding:8px}}
+</style>
+</head><body>
+<header><div class="brand">ADNAN BAVARI DESIGN</div><p class="tag" id="tagline">گەلەری تایبەتی لۆگۆ دیزاینەکان</p><div class="nav"><button class="btn lang" onclick="setLang('ku')">کوردی</button><button class="btn lang" onclick="setLang('en')">English</button></div></header>
+<main class="wrap"><div class="tools"><input id="search" placeholder="گەڕان بە ناو یان ژمارە..." oninput="render()"><select id="category" onchange="render()"><option value="all">هەموو جۆرەکان</option></select></div><div class="count" id="count"></div><section class="grid" id="gallery"></section><div class="empty" id="empty" hidden>هیچ لۆگۆیەک نەدۆزرایەوە</div></main>
+<footer>© <span id="year"></span> ADNAN BAVARI DESIGN<div id="qrtext">QR بۆ کردنەوەی ماڵپەڕ</div><img id="qr" alt="Website QR"><small>بۆ زانیاری و کڕین لە واتسئاپ پەیوەندی بکە.</small></footer>
+<script>
+const WA="9647506950563";let lang="ku",items=[];
+const t=(ku,en)=>lang==="ku"?ku:en;
+async function load(){try{let r=await fetch("/api/products");if(!r.ok)throw Error();items=await r.json();if(!Array.isArray(items))items=[];}catch(e){items=[]}render();}
+function setLang(l){lang=l;document.documentElement.lang=l;document.documentElement.dir=l==="ku"?"rtl":"ltr";document.getElementById("tagline").textContent=t("گەلەری تایبەتی لۆگۆ دیزاینەکان","Exclusive logo design gallery");document.getElementById("search").placeholder=t("گەڕان بە ناو یان ژمارە...","Search by name or ID...");document.getElementById("qrtext").textContent=t("QR بۆ کردنەوەی ماڵپەڕ","Scan to open website");render();}
+function render(){let q=document.getElementById("search").value.toLowerCase(),cat=document.getElementById("category").value;let cats=[...new Set(items.map(x=>lang==="ku"?x.category:x.categoryEn).filter(Boolean))];let sel=document.getElementById("category");sel.innerHTML=`<option value="all">${t("هەموو جۆرەکان","All categories")}</option>`+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");if(cats.includes(cat))sel.value=cat;else cat="all";
+let arr=items.filter(p=>{let n=lang==="ku"?p.name:p.nameEn,d=lang==="ku"?p.description:p.descriptionEn,c=lang==="ku"?p.category:p.categoryEn;return(cat==="all"||c===cat)&&(`${p.id} ${n||""} ${d||""} ${c||""}`).toLowerCase().includes(q)});
+document.getElementById("count").textContent=t("ژمارەی لۆگۆکان: ","Logos: ")+arr.length;document.getElementById("empty").hidden=arr.length>0;
+document.getElementById("gallery").innerHTML=arr.map(p=>{let n=lang==="ku"?p.name:p.nameEn||p.name,d=lang==="ku"?p.description:p.descriptionEn||p.description,price=p.currency==="USD"?"$"+p.price:p.price+" IQD",msg=encodeURIComponent(t("سڵاو، حەز دەکەم زانیاری زیاتر لەسەر ئەم لۆگۆیە بزانم: ","Hello, I'd like details about this logo: ")+n+" (#"+p.id+")");return `<article class="card"><a href="/logo.html?id=${encodeURIComponent(p.id)}" style="text-decoration:none;color:inherit"><div class="thumb">${p.image?`<img loading="lazy" src="${esc(p.image)}" alt="${esc(n)}">`:`<div class="placeholder">AB · ${esc(p.id)}</div>`}</div></a><div class="info"><h2 class="name">${esc(n)}</h2><p class="desc">${esc(d||"")}</p><div class="price">${esc(price)}</div><div class="actions"><a href="/logo.html?id=${encodeURIComponent(p.id)}">${t("بینینی وردەکاری","View details")}</a><a target="_blank" rel="noopener" href="https://wa.me/${WA}?text=${msg}">WhatsApp</a></div></div></article>`}).join("");}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+document.getElementById("year").textContent=new Date().getFullYear();document.getElementById("qr").src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data="+encodeURIComponent(location.origin);load();
+</script></body></html>
